@@ -5,11 +5,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/airportmanagement/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="D:\CNPM_QuanLySanBay\.venv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="D:\QuanLySanBay_VuThanhTai_ThaiVinhNguyen\.venv" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
-  <component name="PackageRequirementsSettings" />
-  <component name="PyDocumentationSettings" />
-  <component name="ReSTService" />
-  <component name="TestRunnerService" />
 </module>

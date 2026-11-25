@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>VNJet - Đặt & Xuất vé</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        select:required:invalid {
+            color: grey;
+        }
+
+        option {
+            color: black;
+        }
+
+        body {
+            background-image: url("{{ url_for('static', filename='images/sky.jfif') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .khung-chuyen-bay {
+            height: 220px;
+            overflow-y: auto;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 12px;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Thanh menu -->
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img alt="Logo" height="80" src="{{ url_for('static', filename='images/logo.png') }}">
+        </a>
+        <button class="navbar-toggler" data-bs-target="#mynavbar" data-bs-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Tra cứu chuyến bay</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/ban-ve">Bán & Xuất vé</a>
+                </li>
+            </ul>
+
+            <!-- Thông tin nhân viên -->
+            <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <strong>Minh Tú</strong> (Nhân viên)
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item text-danger" href="/">Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Khung nội dung chính -->
+<div class="container my-4">
+    <div class="border rounded p-4 shadow bg-white">
+
+        <!-- Bộ lọc chuyến bay -->
+        <div class="row mb-3">
+            <div class="col-md-3 mb-2">
+                <label class="form-label fw-bold">Điểm đi</label>
+                <select class="form-select" name="diemdi">
+                    <option selected value="">Chọn điểm đi</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <label class="form-label fw-bold">Điểm đến</label>
+                <select class="form-select" name="diemden">
+                    <option selected value="">Chọn điểm đến</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <label class="form-label fw-bold">Hạng ghế</label>
+                <select class="form-select" name="hangghe">
+                    <option selected value="">Chọn hạng ghế</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <label class="form-label fw-bold">Khoảng giờ khởi hành</label>
+                <select class="form-select" name="giokhoihanh">
+                    <option selected value="">Chọn khung giờ</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Danh sách chuyến bay -->
+        <div class="khung-chuyen-bay mb-4">
+            <!-- Danh sách chuyến bay sẽ đổ vào đây -->
+        </div>
+
+        <hr>
+
+        <!-- Form thông tin mua vé -->
+        <h4 class="text-center fw-bold mb-4">Nhập thông tin khách mua vé</h4>
+
+        <form action="#" method="POST">
+            <!-- thông tin khách hàng -->
+            <div class="row mb-3">
+                <div class="col-md-7 mb-2">
+                    <label class="form-label">Họ và tên <span class="text-danger">(*)</span></label>
+                    <input type="text" class="form-control" name="hoten" required>
+                </div>
+
+                <div class="col-md-2 mb-2">
+                    <label class="form-label">Giới tính <span class="text-danger">(*)</span></label>
+                    <select class="form-select" name="gioitinh" required>
+                        <option value="Nam" selected>Nam</option>
+                        <option value="Nữ">Nữ</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 mb-2">
+                    <label class="form-label">Ngày sinh <span class="text-danger">(*)</span></label>
+                    <input type="text" class="form-control" id="ngaysinh" name="ngaysinh"
+                           placeholder="Chọn ngày sinh"
+                           onfocus="this.type='date'; this.max=new Date().toLocaleDateString('en-CA');"
+                           onblur="if(!this.value) this.type='text'"
+                           required>
+                </div>
+            </div>
+
+            <!-- Nhập cccd -->
+            <div class="mb-3">
+                <label class="form-label">CCCD <span class="text-danger">(*)</span></label>
+                <input type="text" class="form-control" name="cccd" required>
+            </div>
+
+            <!-- Số điện thoại -->
+            <div class="mb-4">
+                <label class="form-label">Số điện thoại <span class="text-danger">(*)</span></label>
+                <input type="tel" class="form-control" name="sdt" required>
+            </div>
+
+            <!-- Báo giá và xuất vé -->
+            <div class="row align-items-end">
+                <div class="col-md-3 mb-2">
+                    <label class="form-label">Mã ưu đãi</label>
+                    <input type="text" class="form-control" name="mauudai">
+                </div>
+
+                <div class="col-md-6 mb-2 text-center">
+                    <div class="fs-5">
+                        <span class="fw-bold">Giá vé: </span>
+                        <span id="gia-ve"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-2">
+                    <button type="submit" class="btn btn-primary w-100">Xuất vé</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>
