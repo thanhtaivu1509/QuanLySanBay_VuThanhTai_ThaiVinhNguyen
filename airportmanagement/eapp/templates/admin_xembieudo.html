@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        select:required:invalid {
+            color: grey;
+        }
+
+        option {
+            color: black;
+        }
+
+        body {
+            background-image: url("{{ url_for('static', filename='images/sky.jfif') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img alt="Logo" height="80" src="{{ url_for('static', filename='images/logo.png') }}">
+        </a>
+        <button class="navbar-toggler" data-bs-target="#mynavbar" data-bs-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button type="button" class="btn dropdown-toggle text-white" data-bs-toggle="dropdown">
+                            Thống kê báo cáo
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Dạng bảng</a></li>
+                            <li><a class="dropdown-item" href="#">Dạng biểu đồ</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <button type="button" class="btn dropdown-toggle text-white" data-bs-toggle="dropdown">
+                            Quản lý
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Chuyến bay</a></li>
+                            <li><a class="dropdown-item" href="#">Tuyến bay</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            <div class="dropdown">
+                <button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                    <strong>Hữu Thành</strong> (Admin)
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item text-danger" href="#">Đăng xuất</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container pt-5">
+    <div class="bg-white rounded shadow p-4 d-flex flex-column" style="height: 600px;">
+        <form class="d-flex justify-content-center align-items-end gap-3 mb-3">
+            <div>
+                <label class="form-label small"><strong>Hình dạng</strong></label>
+                <select class="form-select form-select-sm w-auto fw-bold" required>
+                    <option disabled hidden selected value="">Chọn hình dạng</option>
+                    <option>Tròn</option>
+                    <option>Cột</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="form-label small"><strong>Dạng số liệu</strong></label>
+                <select class="form-select form-select-sm w-auto fw-bold" required>
+                    <option disabled hidden selected value="">Chọn dạng số liệu</option>
+                    <option>Phần trăm (%)</option>
+                    <option>Số lượng (VNĐ)</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary mt-4" type="button">Vẽ</button>
+            </div>
+        </form>
+        <div class="flex-grow-1 position-relative" style="min-height: 0;">
+            <img src="https://imgs.search.brave.com/GJyTOiMgC5q0ISLCXURJzPB212tL1QZ7lug2iMToU3U/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuYWxwaGFjb2Rl/cnMuY29tLzEzMS90/aHVtYmJpZy0xMzEx/OTUxLndlYnA"
+                 alt="Biểu đồ"
+                 class="position-absolute top-0 start-0 w-100 h-100"
+                 style="object-fit: contain;">
+        </div>
+    </div>
+</div>
+</body>
+</html>
