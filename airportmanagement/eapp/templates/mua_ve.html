@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>VNJet - Mua vé trực tuyến</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        select:required:invalid {
+            color: grey;
+        }
+
+        option {
+            color: black;
+        }
+
+        body {
+            background-image: url("{{ url_for('static', filename='images/sky.jfif') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- THANH MENU TRÊN CÙNG -->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+
+            <a class="navbar-brand" href="/">
+                <img alt="Logo" height="80" src="{{ url_for('static', filename='images/logo.png') }}">
+            </a>
+
+            <button class="navbar-toggler"
+                    data-bs-target="#mynavbar"
+                    data-bs-toggle="collapse"
+                    type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="javascript:void(0)"
+                           onclick="alert('Bạn cần đăng nhập để sử dụng chức năng này')">
+                            Ưu đãi khách hàng
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           href="javascript:void(0)"
+                           onclick="alert('Bạn cần đăng nhập để sử dụng chức năng này')">
+                            Giỏ vé
+                        </a>
+                    </li>
+                </ul>
+
+                <button class="btn btn-primary" type="button">
+                    Đăng nhập
+                </button>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <div class="d-flex justify-content-center align-items-center py-4" style="min-height: calc(100vh - 56px);">
+        <div class="border rounded p-4 shadow bg-white" style="width: 75%;">
+
+            <!-- Thông tin chuến bay -->
+            <div class="border border-primary rounded p-3 mb-4 bg-light">
+                <div class="row fs-5">
+
+                    <div class="col-md-6 mb-2">
+                        <b>Chuyến bay:</b>
+                        <span id="ma-chuyen-bay"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-2">
+                        <b>Hạng vé:</b>
+                        <span id="hang-ve"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <b>Tuyến bay:</b>
+                        <span id="tuyen-bay"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <b>Giá vé:</b>
+                        <span id="gia-ve" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- PHẦN 2: FORM NHẬP THÔNG TIN KHÁCH MUA VÉ -->
+            <h4 class="text-center mb-3">
+                <b>Thông tin khách mua vé</b>
+            </h4>
+
+            <form action="#" method="POST">
+
+                <!-- Hàng 1: Họ tên, Giới tính, Ngày sinh -->
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label">Họ và tên (*)</label>
+                        <input type="text"
+                               class="form-control"
+                               name="hoten"
+                               required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Giới tính (*)</label>
+                        <select class="form-select" name="gioitinh" required>
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Ngày sinh (*)</label>
+                        <input type="text"
+                               class="form-control"
+                               name="ngaysinh"
+                               placeholder="Chọn ngày sinh"
+                               onfocus="this.type='date'; this.max=new Date().toLocaleDateString('en-CA');"
+                               onblur="if(!this.value) this.type='text'"
+                               required>
+                    </div>
+
+                </div>
+
+
+                <!-- Hàng 2: CCCD -->
+                <div class="mb-3">
+                    <label class="form-label">CCCD (*)</label>
+                    <input type="text"
+                           class="form-control"
+                           name="cccd"
+                           required>
+                </div>
+
+
+                <!-- Hàng 3: Email nhận vé -->
+                <div class="mb-3">
+                    <label class="form-label">Email nhận vé (*)</label>
+                    <input type="email"
+                           class="form-control"
+                           name="email"
+                           required>
+                </div>
+
+
+                <!-- Hàng 4: Mã ưu đãi & Phương thức thanh toán -->
+                <div class="row mb-4">
+
+                    <div class="col-md-4">
+                        <label class="form-label">Mã ưu đãi</label>
+                        <input type="text"
+                               class="form-control"
+                               name="mauudai">
+                    </div>
+
+                    <div class="col-md-8">
+                        <label class="form-label">Phương thức thanh toán (*)</label>
+                        <div class="border rounded p-2">
+                            <input type="radio" name="phuongthuc" value="Momo" required> Momo
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="phuongthuc" value="NganHang" checked required> Ngân hàng (Agribank, ACB, BIDV, ...)
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Hàng 5: Thanh toán & Nút Xác nhận -->
+                <div class="row align-items-center">
+
+                    <div class="col-md-8">
+                        <div class="fs-5">
+                            <b>Thanh toán:</b>
+                            <span id="tong-thanh-toan"></span>
+                        </div>
+
+                        <div class="text-success">
+                            Tiết kiệm:
+                            <span id="tien-tiet-kiem"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary w-100">
+                            Xác nhận
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</body>
+</html>
