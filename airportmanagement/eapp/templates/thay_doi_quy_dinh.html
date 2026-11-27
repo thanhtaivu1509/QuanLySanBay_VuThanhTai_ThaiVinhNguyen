@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>VNJet - Thay đổi quy định</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        select:required:invalid {
+            color: grey;
+        }
+
+        option {
+            color: black;
+        }
+
+        body {
+            background-image: url("{{ url_for('static', filename='images/sky.jfif') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- THANH MENU TRÊN CÙNG -->
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <div class="container-fluid">
+
+            <a class="navbar-brand" href="/">
+                <img alt="Logo" height="80" src="{{ url_for('static', filename='images/logo.png') }}">
+            </a>
+
+            <button class="navbar-toggler" data-bs-target="#mynavbar" data-bs-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Tra cứu chuyến bay</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ban-ve">Bán & Xuất vé</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/thay-doi-quy-dinh">Thay đổi quy định</a>
+                    </li>
+                </ul>
+
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <b>Minh Tú</b> (Nhân viên)
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item text-danger" href="/">Đăng xuất</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- KHUNG NỘI DUNG CHÍNH -->
+    <div class="container my-4">
+        <div class="border rounded p-4 shadow bg-white">
+
+            <h3 class="text-center mb-4">
+                <b>THAY ĐỔI QUY ĐỊNH HỆ THỐNG</b>
+            </h3>
+
+
+            <!-- ========================================================= -->
+            <!-- PHẦN 1: QUY ĐỊNH THỜI GIAN BAY, SÂN BAY TRUNG GIAN, ĐẶT/BÁN VÉ -->
+            <!-- ========================================================= -->
+            <div class="border rounded p-3 mb-4 bg-light">
+                <h5 class="mb-3"><b>1. Quy định chung về chuyến bay & đặt/bán vé</b></h5>
+
+                <form action="/thay-doi-quy-dinh" method="POST">
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Thời gian bay tối thiểu (phút)</label>
+                            <input type="number" class="form-control" name="tg_bay_toi_thieu" min="1" placeholder="Ví dụ: 30" required>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Số sân bay trung gian tối đa</label>
+                            <input type="number" class="form-control" name="so_sb_trung_gian_toi_da" min="0" placeholder="Ví dụ: 2" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Thời gian dừng tối thiểu (phút)</label>
+                            <input type="number" class="form-control" name="tg_dung_toi_thieu" min="1" placeholder="Ví dụ: 20" required>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Thời gian dừng tối đa (phút)</label>
+                            <input type="number" class="form-control" name="tg_dung_toi_da" min="1" placeholder="Ví dụ: 30" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Thời gian đặt vé chậm nhất trước khi bay (giờ)</label>
+                            <input type="number" class="form-control" name="tg_dat_ve_cham_nhat" min="1" placeholder="Ví dụ: 24" required>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Thời gian bán vé chậm nhất trước khi bay (giờ)</label>
+                            <input type="number" class="form-control" name="tg_ban_ve_cham_nhat" min="1" placeholder="Ví dụ: 4" required>
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Lưu quy định chung</button>
+                    </div>
+
+                </form>
+            </div>
+
+
+            <!-- ========================================================= -->
+            <!-- PHẦN 2 & 3: DANH SÁCH SÂN BAY & DANH SÁCH HẠNG VÉ -->
+            <!-- ========================================================= -->
+            <div class="row mb-4">
+
+                <!-- Cột trái: Danh sách sân bay -->
+                <div class="col-md-6 mb-3">
+                    <form action="/cap-nhat-san-bay" method="POST" class="border rounded p-3 bg-light">
+
+                        <div class="row mb-2">
+                            <div class="col-7">
+                                <b>2. Danh sách sân bay</b>
+                            </div>
+                            <div class="col-5 text-end">
+                                <button type="button" class="btn btn-success btn-sm" onclick="themSanBay()">
+                                    + Thêm sân bay
+                                </button>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered bg-white mb-3">
+                            <thead class="table-secondary text-center">
+                                <tr>
+                                    <th style="width: 12%;">STT</th>
+                                    <th style="width: 28%;">Mã SB</th>
+                                    <th style="width: 45%;">Tên sân bay</th>
+                                    <th style="width: 15%;">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bang-san-bay">
+                                <!-- Dữ liệu sân bay từ MySQL sẽ đổ vào đây -->
+                            </tbody>
+                        </table>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary btn-sm">Lưu sân bay</button>
+                        </div>
+
+                    </form>
+                </div>
+
+
+                <!-- Cột phải: Danh sách hạng vé -->
+                <div class="col-md-6 mb-3">
+                    <form action="/cap-nhat-hang-ve" method="POST" class="border rounded p-3 bg-light">
+
+                        <div class="row mb-2">
+                            <div class="col-7">
+                                <b>3. Danh sách hạng vé</b>
+                            </div>
+                            <div class="col-5 text-end">
+                                <button type="button" class="btn btn-success btn-sm" onclick="themHangVe()">
+                                    + Thêm hạng vé
+                                </button>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered bg-white mb-3">
+                            <thead class="table-secondary text-center">
+                                <tr>
+                                    <th style="width: 12%;">STT</th>
+                                    <th style="width: 28%;">Mã hạng</th>
+                                    <th style="width: 45%;">Tên hạng vé</th>
+                                    <th style="width: 15%;">Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bang-hang-ve">
+                                <!-- Dữ liệu hạng vé từ MySQL sẽ đổ vào đây -->
+                            </tbody>
+                        </table>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary btn-sm">Lưu hạng vé</button>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+
+
+            <!-- ========================================================= -->
+            <!-- PHẦN 4: BẢNG ĐƠN GIÁ VÉ (THÊM Ô GIÁ CHÍNH THỨC) -->
+            <!-- ========================================================= -->
+            <form action="/cap-nhat-don-gia" method="POST" class="border rounded p-3 bg-light">
+
+                <div class="row mb-2">
+                    <div class="col-8">
+                        <b>4. Bảng đơn giá vé</b>
+                    </div>
+                    <div class="col-4 text-end">
+                        <button type="button" class="btn btn-success btn-sm" onclick="themDonGia()">
+                            + Thêm đơn giá
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table table-bordered bg-white mb-3">
+                    <thead class="table-secondary text-center">
+                        <tr>
+                            <th style="width: 7%;">STT</th>
+                            <th style="width: 20%;">Điểm đi</th>
+                            <th style="width: 20%;">Điểm đến</th>
+                            <th style="width: 15%;">Hạng vé</th>
+                            <th style="width: 15%;">Đơn giá (VNĐ)</th>
+                            <th style="width: 15%;">Giá chính thức</th>
+                            <th style="width: 8%;">Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bang-don-gia">
+                        <!-- Dữ liệu đơn giá từ MySQL sẽ đổ vào đây -->
+                    </tbody>
+                </table>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary btn-sm">Lưu bảng giá</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT CƠ BẢN THÊM / XÓA DÒNG CHO CẢ 3 BẢNG -->
+    <script>
+        function capNhatSTT(idBang) {
+            var bang = document.getElementById(idBang);
+            for (var i = 0; i < bang.rows.length; i++) {
+                bang.rows[i].cells[0].innerHTML = i + 1;
+            }
+        }
+
+        // 1. Thêm dòng mới vào bảng Sân bay
+        function themSanBay() {
+            var bang = document.getElementById("bang-san-bay");
+            var dong = bang.insertRow();
+
+            var o1 = dong.insertCell(0);
+            var o2 = dong.insertCell(1);
+            var o3 = dong.insertCell(2);
+            var o4 = dong.insertCell(3);
+
+            o1.className = "text-center";
+            o1.innerHTML = bang.rows.length;
+
+            o2.innerHTML = '<input type="text" class="form-control" name="ma_san_bay[]" placeholder="Mã SB" required>';
+            o3.innerHTML = '<input type="text" class="form-control" name="ten_san_bay[]" placeholder="Tên sân bay" required>';
+
+            o4.className = "text-center";
+            o4.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="xoaDong(this, \'bang-san-bay\')">Xóa</button>';
+        }
+
+        // 2. Thêm dòng mới vào bảng Hạng vé
+        function themHangVe() {
+            var bang = document.getElementById("bang-hang-ve");
+            var dong = bang.insertRow();
+
+            var o1 = dong.insertCell(0);
+            var o2 = dong.insertCell(1);
+            var o3 = dong.insertCell(2);
+            var o4 = dong.insertCell(3);
+
+            o1.className = "text-center";
+            o1.innerHTML = bang.rows.length;
+
+            o2.innerHTML = '<input type="text" class="form-control" name="ma_hang_ve[]" placeholder="Mã hạng" required>';
+            o3.innerHTML = '<input type="text" class="form-control" name="ten_hang_ve[]" placeholder="Tên hạng vé" required>';
+
+            o4.className = "text-center";
+            o4.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="xoaDong(this, \'bang-hang-ve\')">Xóa</button>';
+        }
+
+        // 3. Thêm dòng mới vào bảng Đơn giá vé (có thêm ô Giá chính thức)
+        function themDonGia() {
+            var bang = document.getElementById("bang-don-gia");
+            var dong = bang.insertRow();
+
+            var o1 = dong.insertCell(0);
+            var o2 = dong.insertCell(1);
+            var o3 = dong.insertCell(2);
+            var o4 = dong.insertCell(3);
+            var o5 = dong.insertCell(4);
+            var o6 = dong.insertCell(5);
+            var o7 = dong.insertCell(6);
+
+            o1.className = "text-center";
+            o1.innerHTML = bang.rows.length;
+
+            o2.innerHTML = '<select class="form-select" name="gia_diem_di[]" required>' +
+                           '<option disabled hidden selected value="">Chọn điểm đi</option>' +
+                           '<option value="TP.HCM">TP.HCM</option>' +
+                           '<option value="Hà Nội">Hà Nội</option>' +
+                           '<option value="Đà Nẵng">Đà Nẵng</option>' +
+                           '</select>';
+
+            o3.innerHTML = '<select class="form-select" name="gia_diem_den[]" required>' +
+                           '<option disabled hidden selected value="">Chọn điểm đến</option>' +
+                           '<option value="TP.HCM">TP.HCM</option>' +
+                           '<option value="Hà Nội">Hà Nội</option>' +
+                           '<option value="Đà Nẵng">Đà Nẵng</option>' +
+                           '</select>';
+
+            o4.innerHTML = '<select class="form-select" name="gia_hang_ve[]" required>' +
+                           '<option disabled hidden selected value="">Hạng vé</option>' +
+                           '<option value="Hạng 1">Hạng 1</option>' +
+                           '<option value="Hạng 2">Hạng 2</option>' +
+                           '</select>';
+
+            o5.innerHTML = '<input type="number" class="form-control" name="don_gia[]" min="0" placeholder="Nhập đơn giá" required>';
+
+            o6.innerHTML = '<input type="text" class="form-control bg-light" name="gia_chinh_thuc[]" readonly>';
+
+            o7.className = "text-center";
+            o7.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="xoaDong(this, \'bang-don-gia\')">Xóa</button>';
+        }
+
+        // Hàm xóa dùng chung cho cả 3 bảng
+        function xoaDong(nut, idBang) {
+            var dong = nut.parentNode.parentNode;
+            dong.remove();
+            capNhatSTT(idBang);
+        }
+    </script>
+
+</body>
+</html>
