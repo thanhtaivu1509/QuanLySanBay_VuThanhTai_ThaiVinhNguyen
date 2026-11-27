@@ -13,9 +13,9 @@ app = Flask(__name__)
 # def ban_ve():
 #     return render_template('customers_datve.html')
 
-# @app.route('/')
-# def admin():
-#      return render_template('admin_xembieudo.html')
+@app.route('/')
+def admin():
+     return render_template('admin_xembieudo.html')
 
 # @app.route('/')
 # def admin():
@@ -33,9 +33,9 @@ app = Flask(__name__)
 # def admin():
 #      return render_template('customers.html')
 
-@app.route('/')
-def ban_ve():
-    return render_template('login_tracuuve.html')
+# @app.route('/')
+# def ban_ve():
+#     return render_template('login_tracuuve.html')
 
 if __name__ == '__main__':
     with app.app_context():

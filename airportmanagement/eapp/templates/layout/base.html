@@ -25,6 +25,9 @@
     </style>
 </head>
 <body>
-{%  include 'layout/admin_header.html' %}
+{% include 'layout/admin_header.html' %}
+<section class="container-fluid">
+    {% block content %}{% endblock %}
+</section>
 </body>
 </html>
